@@ -114,7 +114,7 @@ class EauFranceData():
         if device_class == "H":
             self.unit = "m"
         else:
-            self.unit = "m<sup>3/s"
+            self.unit = "m3/s"
 
 
     @Throttle(MIN_TIME_BETWEEN_UPDATES)
@@ -130,6 +130,7 @@ class EauFranceData():
             self.data = obs["resultat_obs"]
             if self._device_class == "Q":
                 self.data /= 1000
+                self.date = int(self_data)
         except ConnectionError:
             _LOGGER.warning("Unable to connect to Vigicrues URL")
         except TimeoutError:
