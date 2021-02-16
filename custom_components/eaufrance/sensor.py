@@ -168,16 +168,14 @@ class EauFranceData():
 
 
     def get_results_data(self):
-        url = self.get_device_history_url()
-        #print(url)
-        response = requests.get(url)
-        if response.status_code != requests.codes.ok:
-            raise Exception("requests getting data: {0}".format(response.status_code))
-        content = response.content.decode()
+        #url = self.get_device_history_url()
+        #response = requests.get(url)
+        #if response.status_code != requests.codes.ok:
+        #    raise Exception("requests getting data: {0}".format(response.status_code))
+        #content = response.content.decode()
+        content = '{"count":10,"first":"https://hubeau.eaufrance.fr/api/v1/hydrometrie/observations_tr?code_entite=O588251001&grandeur_hydro=Q&timestep=60&sort=desc&date_debut_obs=2021-02-16&page=1&size=10","prev":null,"next":null,"api_version":"1.0.1","data":[{"code_site":"O5882510","code_station":"O588251001","grandeur_hydro":"Q","date_debut_serie":"2021-02-16T00:00:00Z","date_fin_serie":"2021-02-16T10:00:00Z","statut_serie":4,"code_systeme_alti_serie":31,"date_obs":"2021-02-16T10:00:00Z","resultat_obs":147629.0,"code_methode_obs":12,"libelle_methode_obs":"Interpolation","code_qualification_obs":16,"libelle_qualification_obs":"Non qualifiée","continuite_obs_hydro":true,"longitude":1.340482605,"latitude":44.091553707}]}'
         content = content.replace(":null", ":None")
         content = content.replace(":true", ":True")
-        #content = '{"count":10,"first":"https://hubeau.eaufrance.fr/api/v1/hydrometrie/observations_tr?code_entite=O588251001&grandeur_hydro=Q&timestep=60&sort=desc&date_debut_obs=2021-02-16&page=1&size=10","prev":"null","next":"null","api_version":"1.0.1","data":[{"code_site":"O5882510","code_station":"O588251001","grandeur_hydro":"Q","date_debut_serie":"2021-02-16T00:00:00Z","date_fin_serie":"2021-02-16T10:00:00Z","statut_serie":4,"code_systeme_alti_serie":31,"date_obs":"2021-02-16T10:00:00Z","resultat_obs":147629.0,"code_methode_obs":12,"libelle_methode_obs":"Interpolation","code_qualification_obs":16,"libelle_qualification_obs":"Non qualifiée","continuite_obs_hydro":True,"longitude":1.340482605,"latitude":44.091553707}]}'
-        #print(content)
         root = ast.literal_eval(content)
         d = root["data"]
         return d
