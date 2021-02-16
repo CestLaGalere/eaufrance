@@ -1,1 +1,3 @@
-# eaufrance
+# Eaufrance integation
+
+see info.md

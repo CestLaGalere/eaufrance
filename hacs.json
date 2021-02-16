@@ -1,0 +1,7 @@
+{
+    "name": "Eaufrance",
+    "country": "FR",
+    "domains": ["sensor"],
+    "homeassistant": "0.115.0",
+    "iot_class": ["Cloud Polling"]
+}
