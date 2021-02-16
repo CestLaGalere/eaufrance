@@ -114,7 +114,7 @@ class EauFranceData():
         if device_class == "H":
             self.unit = "m"
         else:
-            self.unit = "m3/s"
+            self.unit = "m³/s"
 
 
     @Throttle(MIN_TIME_BETWEEN_UPDATES)
