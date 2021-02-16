@@ -130,7 +130,7 @@ class EauFranceData():
             self.data = obs["resultat_obs"]
             if self._device_class == "Q":
                 self.data /= 1000
-                self.date = int(self_data)
+                self.data = int(self.data)
         except ConnectionError:
             _LOGGER.warning("Unable to connect to Vigicrues URL")
         except TimeoutError:
