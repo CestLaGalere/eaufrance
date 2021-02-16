@@ -157,9 +157,9 @@ class EauFranceData():
             "sort": "desc"
             }
 
-        now = datetime.datetime.now()
+        now = datetime.now()
         now += self._time_zone.utcoffset(now)
-        start_of_period = now - datetime.timedelta(hours = 4)
+        start_of_period = now - timedelta(hours = 4)
         params.update({"date_debut_obs" : start_of_period.strftime("%Y-%m-%dT%H:%M:%S")})
 
         all_params = '&'.join('{0}={1}'.format(key, val) for key, val in params.items())
