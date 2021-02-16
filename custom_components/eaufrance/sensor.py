@@ -2,6 +2,7 @@
 from datetime import datetime, timedelta, time
 import pytz
 import logging
+import ast
 
 import voluptuous as vol
 
@@ -19,7 +20,6 @@ from homeassistant.helpers.entity import Entity
 from homeassistant.util import Throttle
 
 import requests
-from bs4 import BeautifulSoup
 
 #from . import extract_start_stop, extract_value_units
 
