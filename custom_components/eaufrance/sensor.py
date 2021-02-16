@@ -1,4 +1,4 @@
-"""Support for the MobileAlerts service."""
+"""Support for the EauFrance service."""
 from datetime import datetime, timedelta, time
 import pytz
 import logging
@@ -59,7 +59,7 @@ async def async_setup_platform(hass, config, async_add_entities, discovery_info=
 
 
 class VigicruesSensor(Entity):
-    """Implementation of an Vigicrues sensor."""
+    """Implementation of an EauFrance sensor."""
 
     def __init__(self, name, vcs):
         """Initialize the sensor."""
@@ -86,17 +86,17 @@ class VigicruesSensor(Entity):
 
     @property
     def device_state_attributes(self):
-        source = "Vigicrues"
+        source = "EauFrance"
         return {ATTR_ATTRIBUTION: ATTRIBUTION.format(source)}
 
 
     def update(self):
-        """Get the latest data from Vigicrues and updates the state."""
+        """Get the latest data from EauFrance and updates the state."""
 
         #try:
         self._vcs.update(self.hass)
         #except:
-        #    _LOGGER.error("Exception when getting MA web update data")
+        #    _LOGGER.error("Exception when getting EauFrance web update data")
         #    return
 
         self._state = self._vcs.data
@@ -104,7 +104,7 @@ class VigicruesSensor(Entity):
 
 
 class EauFranceData():
-    """Get the latest data from Vigicrues."""
+    """Get the latest data from EauFrance."""
 
     def __init__(self, hass, device_id, device_class):
         self._device_id = device_id
@@ -124,17 +124,17 @@ class EauFranceData():
             obs = self.get_first_reading()
 
             if obs is None:
-                _LOGGER.warning("Failed to fetch data from Vigicrues")
+                _LOGGER.warning("Failed to fetch data from EauFrance")
                 return
 
             self.data = obs["resultat_obs"]
             if self._device_class == "Q":
                 self.data /= 1000
-                self.data = int(self.data)
+                self.data = round(self.data, 1)
         except ConnectionError:
-            _LOGGER.warning("Unable to connect to Vigicrues URL")
+            _LOGGER.warning("Unable to connect to EauFrance URL")
         except TimeoutError:
-            _LOGGER.warning("Timeout connecting to Vigicrues URL")
+            _LOGGER.warning("Timeout connecting to EauFrance URL")
         except Exception as e:
             _LOGGER.warning("{0} occurred details: {1}".format(e.__class__, e))
 

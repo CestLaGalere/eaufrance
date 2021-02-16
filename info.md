@@ -20,9 +20,9 @@ add elements to yaml sensor section:
 
 device_class - Q (Quantity of water - in m3 / s) H - river height (m)
 device_id: id of the station
-see either 
-https://hubeau.eaufrance.fr/api/v1/hydrometrie/referentiel/sites
+see either
+<https://hubeau.eaufrance.fr/api/v1/hydrometrie/referentiel/sites>
 or the map at:
-https://www.vigicrues.gouv.fr/niv2-bassin.php?CdEntVigiCru=25
+<https://www.vigicrues.gouv.fr/niv2-bassin.php?CdEntVigiCru=25>
 
-https://hubeau.eaufrance.fr/api/v1/hydrometrie/api-docs
+<https://hubeau.eaufrance.fr/api/v1/hydrometrie/api-docs>
