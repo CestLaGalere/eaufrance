@@ -2,15 +2,18 @@
 
 ## Installation
 
-To install this integration you will need to add <https://github.com/cestlagalere/eaufrance> as a custom repository in HACS.
+To install this integration you will need to add this as a custom repository in HACS.
+Open HACS page, then click integrations
+Click the three dots top right, select Custom repositories
+URL enter <https://github.com/cestlagalere/eaufrance>
+Catgory select Integration
+click Add
 
-Once installed you will be able to install the integration from the HACS integrations page.
+Once installed you will then be able to install this integration from the HACS integrations page.
 
 Restart your Home Assistant to complete the installation.
 
 ## Configuration
-
-Go to Configuration -> Integrations and click the plus sign to add a Eaufrance integration. Search for Eaufrance and click add.
 
 add elements to yaml sensor section:
   \- platform: eaufrance
