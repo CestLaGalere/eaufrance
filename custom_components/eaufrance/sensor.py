@@ -17,11 +17,6 @@ from homeassistant.const import (
 
 import homeassistant.helpers.config_validation as cv
 from homeassistant.helpers.entity import Entity
-from homeassistant.helpers.typing import (
-    ConfigType,
-    DiscoveryInfoType,
-    HomeAssistantType,
-)
 from homeassistant.util import Throttle
 
 import requests
@@ -34,7 +29,7 @@ ATTRIBUTION = "Data provided by {0}"
 
 DEFAULT_NAME = "VC"
 
-MIN_TIME_BETWEEN_UPDATES = timedelta(hours=1)
+MIN_TIME_BETWEEN_UPDATES = timedelta(seconds=60 * 60) # hourly
 
 DEVICE_CLASS = {
     "H": "Height",
@@ -51,19 +46,14 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
 )
 
 
-async def async_setup_platform(
-    hass: HomeAssistantType,
-    config: ConfigType,
-    async_add_entities: Callable,
-    discovery_info: Optional[DiscoveryInfoType] = None,
-) -> None:
+async def async_setup_platform(hass, config, async_add_entities, discovery_info=None):
     name = config.get(CONF_NAME)
     device_class = config.get(CONF_DEVICE_CLASS)
     device_id = config.get(CONF_DEVICE_ID)
 
-    efd = EauFranceData(hass, device_id, device_class)
+    vcs = EauFranceData(hass, device_id, device_class)
     async_add_entities(
-        [VigicruesSensor.current(name, efd)],
+        [VigicruesSensor.current(name, vcs)],
         True,
     )
 
@@ -71,31 +61,28 @@ async def async_setup_platform(
 class VigicruesSensor(Entity):
     """Implementation of an EauFrance sensor."""
 
-    def __init__(self, name: str, efd: EauFranceData):
+    def __init__(self, name, vcs):
         """Initialize the sensor."""
         self._name = name
-        self._efd = efd
+        self._vcs = vcs
         self._state = None
+        self._unit_of_measurement = ""
 
     @classmethod
     def current(cls, name, vcs):
-        return cls(name, efd)
+        return cls(name, vcs)
 
     @property
-    def name(self) -> str:
+    def name(self):
         return self._name
 
     @property
-    def unique_id(self) -> str:
-        return self._efd.unique_id
-
-    @property
-    def state(self) -> Optional[str]:
+    def state(self):
         return self._state
 
     @property
-    def unit_of_measurement(self) -> str:
-        return self._efd.unit_of_measurement
+    def unit_of_measurement(self):
+        return self._unit_of_measurement
 
     @property
     def device_state_attributes(self):
@@ -107,7 +94,7 @@ class VigicruesSensor(Entity):
         """Get the latest data from EauFrance and updates the state."""
 
         #try:
-        self._efd.update(self.hass)
+        self._vcs.update(self.hass)
         #except:
         #    _LOGGER.error("Exception when getting EauFrance web update data")
         #    return
@@ -125,23 +112,13 @@ class EauFranceData():
         self._time_zone = hass.config.time_zone
         self.data = None
         if device_class == "H":
-            self._unit = "m"
+            self.unit = "m"
         else:
-            self._unit = "m³/s"
-
-
-    @property
-    def unique_id(self) -> str:
-        return "efd_" + self._device_id + self._device_class
-
-
-    @property
-    def unit_of_measurement(self) -> str:
-        return self._unit
+            self.unit = "m³/s"
 
 
     @Throttle(MIN_TIME_BETWEEN_UPDATES)
-    def update(self, hass) -> None:
+    def update(self, hass):
         # get readings from MA website
         try:
             obs = self.get_first_reading()
@@ -162,7 +139,7 @@ class EauFranceData():
             _LOGGER.warning("{0} occurred details: {1}".format(e.__class__, e))
 
 
-    def get_device_history_url(self) -> str:
+    def get_device_history_url(self):
         """
         Create url to get the last 4h of readings for this station
         Parameters
@@ -204,8 +181,7 @@ class EauFranceData():
         d = root["data"]
         return d
 
-
-    def get_first_reading(self) -> Dict[str, Any]:
+    def get_first_reading(self):
         d = self.get_results_data()
         reading = {"date_obs": d[0]["date_obs"], "resultat_obs": d[0]["resultat_obs"]}
         return reading
