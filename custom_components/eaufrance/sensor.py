@@ -17,6 +17,11 @@ from homeassistant.const import (
 
 import homeassistant.helpers.config_validation as cv
 from homeassistant.helpers.entity import Entity
+from homeassistant.helpers.typing import (
+    ConfigType,
+    DiscoveryInfoType,
+    HomeAssistantType,
+    )
 from homeassistant.util import Throttle
 
 import requests
@@ -51,9 +56,9 @@ async def async_setup_platform(hass, config, async_add_entities, discovery_info=
     device_class = config.get(CONF_DEVICE_CLASS)
     device_id = config.get(CONF_DEVICE_ID)
 
-    vcs = EauFranceData(hass, device_id, device_class)
+    efd = EauFranceData(hass, device_id, device_class)
     async_add_entities(
-        [VigicruesSensor.current(name, vcs)],
+        [VigicruesSensor.current(name, efd)],
         True,
     )
 
@@ -61,10 +66,10 @@ async def async_setup_platform(hass, config, async_add_entities, discovery_info=
 class VigicruesSensor(Entity):
     """Implementation of an EauFrance sensor."""
 
-    def __init__(self, name, vcs):
+    def __init__(self, name, efd):
         """Initialize the sensor."""
         self._name = name
-        self._vcs = vcs
+        self._efd = efd
         self._state = None
         self._unit_of_measurement = ""
 
@@ -94,13 +99,13 @@ class VigicruesSensor(Entity):
         """Get the latest data from EauFrance and updates the state."""
 
         #try:
-        self._vcs.update(self.hass)
+        self._efd.update(self.hass)
         #except:
         #    _LOGGER.error("Exception when getting EauFrance web update data")
         #    return
 
-        self._state = self._vcs.data
-        self._unit_of_measurement = self._vcs.unit
+        self._state = self._efd.data
+        self._unit_of_measurement = self._efd.unit
 
 
 class EauFranceData():
