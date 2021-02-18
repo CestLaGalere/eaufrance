@@ -74,8 +74,8 @@ class VigicruesSensor(Entity):
         self._unit_of_measurement = ""
 
     @classmethod
-    def current(cls, name, vcs):
-        return cls(name, vcs)
+    def current(cls, name, efd):
+        return cls(name, efd)
 
     @property
     def name(self):
