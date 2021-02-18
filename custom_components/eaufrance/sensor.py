@@ -78,7 +78,7 @@ class VigicruesSensor(Entity):
         return cls(name, vcs)
 
     @property
-    def name(self) -> str:
+    def name(self):
         return self._name
 
     @property
@@ -86,11 +86,11 @@ class VigicruesSensor(Entity):
         return self._state
 
     @property
-    def unit_of_measurement(self) -> str:
+    def unit_of_measurement(self):
         return self._unit_of_measurement
 
     @property
-    def device_state_attributes(self) -> Dict[str, str]:
+    def device_state_attributes(self):
         source = "EauFrance"
         return {ATTR_ATTRIBUTION: ATTRIBUTION.format(source)}
 
