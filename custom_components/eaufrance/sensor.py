@@ -52,12 +52,7 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
 )
 
 
-async def async_setup_platform(
-    hass: HomeAssistantType,
-    config: ConfigType,
-    async_add_entities: Callable,
-    discovery_info: Optional[DiscoveryInfoType] = None,
-) -> None:
+async def async_setup_platform(hass, config, async_add_entities, discovery_info=None):
     session = async_get_clientsession(hass)
     name = config.get(CONF_NAME)
     device_class = config.get(CONF_DEVICE_CLASS)
@@ -73,7 +68,7 @@ async def async_setup_platform(
 class VigicruesSensor(Entity):
     """Implementation of an EauFrance sensor."""
 
-    def __init__(self, name: str, efd: EauFranceData):
+    def __init__(self, name, efd):
         """Initialize the sensor."""
         self._name = name
         self._efd = efd
@@ -81,7 +76,7 @@ class VigicruesSensor(Entity):
         self._unit_of_measurement = ""
 
     @classmethod
-    def current(cls, name: str, efd: EauFranceData):
+    def current(cls, name, efd):
         return cls(name, efd)
 
     @property
