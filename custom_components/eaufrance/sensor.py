@@ -3,7 +3,7 @@ from datetime import datetime, timedelta, time
 import pytz
 import logging
 import ast
-from typing import Any, Callable, Dict, Optional
+#from typing import Any, Callable, Dict, Optional
 
 import voluptuous as vol
 
@@ -20,11 +20,11 @@ from homeassistant.const import (
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 import homeassistant.helpers.config_validation as cv
 from homeassistant.helpers.entity import Entity
-from homeassistant.helpers.typing import (
-    ConfigType,
-    DiscoveryInfoType,
-    HomeAssistantType,
-    )
+#from homeassistant.helpers.typing import (
+#    ConfigType,
+#    DiscoveryInfoType,
+#    HomeAssistantType,
+#    )
 from homeassistant.util import Throttle
 
 import requests
@@ -80,15 +80,15 @@ class VigicruesSensor(Entity):
         return cls(name, efd)
 
     @property
-    def name(self) -> str:
+    def name(self):
         return self._name
 
     @property
-    def state(self) -> Optional[str]:
+    def state(self):
         return self._state
 
     @property
-    def unit_of_measurement(self) -> str:
+    def unit_of_measurement(self):
         return self._unit_of_measurement
 
     @property
