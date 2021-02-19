@@ -3,9 +3,11 @@ from datetime import datetime, timedelta, time
 import pytz
 import logging
 import ast
+from typing import Any, Callable, Dict, Optional
 
 import voluptuous as vol
 
+from homeassistant import config_entries, core
 from homeassistant.components.sensor import PLATFORM_SCHEMA
 
 from homeassistant.const import (
@@ -15,6 +17,7 @@ from homeassistant.const import (
     CONF_DEVICE_ID,
 )
 
+from homeassistant.helpers.aiohttp_client import async_get_clientsession
 import homeassistant.helpers.config_validation as cv
 from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.typing import (
@@ -26,15 +29,13 @@ from homeassistant.util import Throttle
 
 import requests
 
-#from . import extract_start_stop, extract_value_units
-
 _LOGGER = logging.getLogger(__name__)
 
 ATTRIBUTION = "Data provided by {0}"
 
 DEFAULT_NAME = "VC"
 
-MIN_TIME_BETWEEN_UPDATES = timedelta(seconds=60 * 60) # hourly
+MIN_TIME_BETWEEN_UPDATES = timedelta(hours=1)
 
 DEVICE_CLASS = {
     "H": "Height",
@@ -51,7 +52,13 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
 )
 
 
-async def async_setup_platform(hass, config, async_add_entities, discovery_info=None):
+async def async_setup_platform(
+    hass: HomeAssistantType,
+    config: ConfigType,
+    async_add_entities: Callable,
+    discovery_info: Optional[DiscoveryInfoType] = None,
+) -> None:
+    session = async_get_clientsession(hass)
     name = config.get(CONF_NAME)
     device_class = config.get(CONF_DEVICE_CLASS)
     device_id = config.get(CONF_DEVICE_ID)
@@ -66,7 +73,7 @@ async def async_setup_platform(hass, config, async_add_entities, discovery_info=
 class VigicruesSensor(Entity):
     """Implementation of an EauFrance sensor."""
 
-    def __init__(self, name, efd):
+    def __init__(self, name: str, efd: EauFranceData):
         """Initialize the sensor."""
         self._name = name
         self._efd = efd
@@ -74,7 +81,7 @@ class VigicruesSensor(Entity):
         self._unit_of_measurement = ""
 
     @classmethod
-    def current(cls, name, efd):
+    def current(cls, name: str, efd: EauFranceData):
         return cls(name, efd)
 
     @property
@@ -82,11 +89,11 @@ class VigicruesSensor(Entity):
         return self._name
 
     @property
-    def state(self):
+    def state(self) -> Optional[str]:
         return self._state
 
     @property
-    def unit_of_measurement(self):
+    def unit_of_measurement(self) -> str:
         return self._unit_of_measurement
 
     @property
