@@ -84,9 +84,9 @@ class VigicruesSensor(Entity):
     def name(self):
         return self._name
 
-    @property
-    def unique_id(self):
-        return self._unique_id
+#    @property
+#    def unique_id(self):
+#        return self._unique_id
 
     @property
     def state(self):
