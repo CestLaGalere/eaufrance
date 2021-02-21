@@ -135,9 +135,8 @@ class EauFranceData():
                 return
 
             self.data = obs["resultat_obs"]
-            if self._device_class == "Q":
-                self.data /= 1000
-                self.data = round(self.data, 1)
+            self.data /= 1000
+            self.data = round(self.data, 1)
         except ConnectionError:
             _LOGGER.warning("Unable to connect to EauFrance URL")
         except TimeoutError:
