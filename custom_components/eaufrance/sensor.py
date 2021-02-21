@@ -143,9 +143,8 @@ class EauFranceData():
                 _LOGGER.warning("Failed to fetch data from EauFrance")
                 return
 
-            self.data = obs["resultat_obs"]
-            self.data /= 1000
-            if self.date < 10:
+            self.data = obs["resultat_obs"] / 1000
+            if self.data < 10:
                 self.data = round(self.data, 2)
             else:
                 self.data = round(self.data, 1)
