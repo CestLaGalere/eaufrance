@@ -145,7 +145,10 @@ class EauFranceData():
 
             self.data = obs["resultat_obs"]
             self.data /= 1000
-            self.data = round(self.data, 1)
+            if self.date < 10:
+                self.data = round(self.data, 2)
+            else:
+                self.data = round(self.data, 1)
         except ConnectionError:
             _LOGGER.warning("Unable to connect to EauFrance URL")
         except TimeoutError:
