@@ -74,7 +74,7 @@ class VigicruesSensor(Entity):
         self._efd = efd
         self._state = None
         self._unit_of_measurement = ""
-        self._unique_id = eft.unique_id
+        self._unique_id = efd.unique_id
 
     @classmethod
     def current(cls, name, efd):
