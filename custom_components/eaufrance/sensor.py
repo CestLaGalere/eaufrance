@@ -74,6 +74,7 @@ class VigicruesSensor(Entity):
         self._efd = efd
         self._state = None
         self._unit_of_measurement = ""
+        self._unique_id = eft.unique_id
 
     @classmethod
     def current(cls, name, efd):
@@ -82,6 +83,10 @@ class VigicruesSensor(Entity):
     @property
     def name(self):
         return self._name
+
+    @property
+    def unique_id(self):
+        return self._unique_id
 
     @property
     def state(self):
@@ -123,6 +128,10 @@ class EauFranceData():
         else:
             self.unit = "m³/s"
 
+
+    @property
+    def unique_id(self):
+        return "sensor." + self._device_id + self._device_class
 
     @Throttle(MIN_TIME_BETWEEN_UPDATES)
     def update(self, hass):
