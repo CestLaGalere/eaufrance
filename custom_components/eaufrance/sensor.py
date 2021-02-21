@@ -135,7 +135,7 @@ class EauFranceData():
 
     @Throttle(MIN_TIME_BETWEEN_UPDATES)
     def update(self, hass):
-        # get readings from MA website
+        # get readings from eurfrance website
         try:
             obs = self.get_first_reading()
 
@@ -148,6 +148,7 @@ class EauFranceData():
                 self.data = round(self.data, 2)
             else:
                 self.data = round(self.data, 1)
+
         except ConnectionError:
             _LOGGER.warning("Unable to connect to EauFrance URL")
         except TimeoutError:
