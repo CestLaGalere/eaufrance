@@ -98,9 +98,9 @@ class VigicruesSensor(Entity):
 
     @property
     def icon(self):
-        #if self._efd.device_class == "H":
-        return "mdi:waves"
-        #return "mdi:fast-forward"
+        if self._efd.device_class == "H":
+            return "mdi:waves"
+        return "mdi:fast-forward"
 
     @property
     def device_state_attributes(self):
