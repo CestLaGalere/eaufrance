@@ -97,6 +97,12 @@ class VigicruesSensor(Entity):
         return self._unit_of_measurement
 
     @property
+    def icon(self):
+        if self._efd.device_class == "H":
+            return "mdi:waves"
+        return "mdi:fast-forward"
+
+    @property
     def device_state_attributes(self):
         source = "EauFrance"
         return {ATTR_ATTRIBUTION: ATTRIBUTION.format(source)}
@@ -116,7 +122,9 @@ class VigicruesSensor(Entity):
 
 
 class EauFranceData():
-    """Get the latest data from EauFrance."""
+    """Get the latest data from EauFrance.
+    device_class must be H or Q
+    """
 
     def __init__(self, hass, device_id, device_class):
         self._device_id = device_id
@@ -129,10 +137,13 @@ class EauFranceData():
         else:
             self.unit = "m³/s"
 
+    @property
+    def device_class(self):
+        return self._device_class
 
     @property
     def unique_id(self):
-        return "sensor." + self._device_id + self._device_class
+        return "edf_{}_{}".format(self._device_id, self._device_class)
 
     @Throttle(MIN_TIME_BETWEEN_UPDATES)
     def update(self, hass):
