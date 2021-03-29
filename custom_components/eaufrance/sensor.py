@@ -192,9 +192,14 @@ class EauFranceData():
             }
 
         now = datetime.now()
-        now += self._time_zone.utcoffset(now)
-        start_of_period = now - timedelta(hours = 6)    # get 4 hours readings
+        now_utc = now - self._time_zone.utcoffset(now)
+        start_of_period = now_utc - timedelta(hours = 6)    # get 4 hours readings
         params.update({"date_debut_obs" : start_of_period.strftime("%Y-%m-%dT%H:%M:%S")})
+
+        if self._device_id == "O598101001":
+            _LOGGER.warning("now - utcoffset: {0}".format(now.strftime("%Y-%m-%dT%H:%M:%S")))
+            _LOGGER.warning("now: {0}".format(now.strftime("%Y-%m-%dT%H:%M:%S")))
+            _LOGGER.warning("startofperiod: {0}".format(start_of_period.strftime("%Y-%m-%dT%H:%M:%S")))
 
         all_params = '&'.join('{0}={1}'.format(key, val) for key, val in params.items())
         
