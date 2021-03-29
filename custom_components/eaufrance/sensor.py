@@ -193,7 +193,7 @@ class EauFranceData():
 
         now = datetime.now()
         now += self._time_zone.utcoffset(now)
-        start_of_period = now - timedelta(hours = 4)    # get 4 hours readings
+        start_of_period = now - timedelta(hours = 6)    # get 4 hours readings
         params.update({"date_debut_obs" : start_of_period.strftime("%Y-%m-%dT%H:%M:%S")})
 
         all_params = '&'.join('{0}={1}'.format(key, val) for key, val in params.items())
