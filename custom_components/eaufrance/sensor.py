@@ -191,13 +191,14 @@ class EauFranceData():
             "sort": "desc"
             }
 
+        now = datetime.now()
         now_utc = homeassistant.util.dt.utcnow()
         start_of_period = now_utc - timedelta(hours = 4)    # get 4 hours readings
         params.update({"date_debut_obs" : start_of_period.strftime("%Y-%m-%dT%H:%M:%S")})
 
-        if self._device_id == "O598101001":
-            _LOGGER.warning("utc          : {0}".format(now_utc.strftime("%Y-%m-%dT%H:%M:%S")))
-            _LOGGER.warning("startofperiod: {0}".format(start_of_period.strftime("%Y-%m-%dT%H:%M:%S")))
+        _LOGGER.warning("now          : {0}".format(now.strftime("%Y-%m-%dT%H:%M:%S")))
+        _LOGGER.warning("utc          : {0}".format(now_utc.strftime("%Y-%m-%dT%H:%M:%S")))
+        _LOGGER.warning("startofperiod: {0}".format(start_of_period.strftime("%Y-%m-%dT%H:%M:%S")))
 
         all_params = '&'.join('{0}={1}'.format(key, val) for key, val in params.items())
         
