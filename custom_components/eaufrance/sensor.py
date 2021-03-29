@@ -26,6 +26,7 @@ from homeassistant.helpers.entity import Entity
 #    HomeAssistantType,
 #    )
 from homeassistant.util import Throttle
+from homeassistant.util import dt as dt_util
 
 import requests
 
@@ -192,7 +193,7 @@ class EauFranceData():
             }
 
         now = datetime.now()
-        now_utc = homeassistant.util.dt.utcnow()
+        now_utc = dt_util.utcnow()
         start_of_period = now_utc - timedelta(hours = 4)    # get 4 hours readings
         params.update({"date_debut_obs" : start_of_period.strftime("%Y-%m-%dT%H:%M:%S")})
 
