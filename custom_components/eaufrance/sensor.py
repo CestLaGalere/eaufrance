@@ -208,7 +208,7 @@ class EauFranceData():
         url = self.get_device_history_url()
         response = requests.get(url)
         if response.status_code != requests.codes.ok:
-            raise Exception("requests getting data: {0}".format(response.status_code))
+            raise Exception("requests: getting data: {0}, {1}".format(response.status_code, url))
         content = response.content.decode()
         # returned example (split to ned lines for readability - no line breaks in reality)
         # after the date_obs and resultat_obs values
