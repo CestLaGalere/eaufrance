@@ -192,11 +192,11 @@ class EauFranceData():
             "sort": "desc"
             }
 
-        #now = datetime.now()
         now_utc = dt_util.utcnow()
         start_of_period = now_utc - timedelta(hours = 2)    # get 4 hours readings
         params.update({"date_debut_obs" : start_of_period.strftime("%Y-%m-%dT%H:%M:%S")})
 
+        #now = datetime.now()
         #_LOGGER.warning("now          : {0}".format(now.strftime("%Y-%m-%dT%H:%M:%S")))
         #_LOGGER.warning("utc          : {0}".format(now_utc.strftime("%Y-%m-%dT%H:%M:%S")))
         #_LOGGER.warning("startofperiod: {0}".format(start_of_period.strftime("%Y-%m-%dT%H:%M:%S")))
