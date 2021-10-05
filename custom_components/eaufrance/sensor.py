@@ -156,6 +156,10 @@ class EauFranceData():
                 _LOGGER.warning("Failed to fetch data from EauFrance")
                 return
 
+            if "resultat_obs" not in obs:
+                _LOGGER.warning("resultat_obs not found in:")
+                _LOGGER.warning(obs)
+
             self.data = obs["resultat_obs"] / 1000
 
             # show under 10m in cm, otherwise to 1 dp.
@@ -169,7 +173,7 @@ class EauFranceData():
         except TimeoutError:
             _LOGGER.warning("Timeout connecting to EauFrance URL")
         except Exception as e:
-            _LOGGER.warning("{0} occurred details: {1}".format(e.__class__, e))
+            _LOGGER.warning("{0} occurred in update. Details: {1}".format(e.__class__, e))
 
 
     def get_device_history_url(self):
@@ -249,7 +253,18 @@ class EauFranceData():
         content = content.replace(":true", ":True")
 
         root = ast.literal_eval(content)
+        if "data" not in root:
+            _LOGGER.warning(root)
+            raise Exception("data not found in root")
+        
+        count = root["count"]
+        if count == 0:
+            raise Exception("No observations returned for {0}".format(self._device_id))
+            
         d = root["data"]
+        if len(d) == 0:
+            _LOGGER.warning(root)
+            raise Exception("data contains no readings")
         return d
 
     def get_first_reading(self):
@@ -259,5 +274,11 @@ class EauFranceData():
         dictionary with these two key/values
         """
         d = self.get_results_data()
-        reading = {"date_obs": d[0]["date_obs"], "resultat_obs": d[0]["resultat_obs"]}
+
+        first_reading = d[0]
+        if "date_obs" not in first_reading or "resultat_obs" not in first_reading:
+            _LOGGER.warning(first_reading)
+            raise Exception("unexpected format of first_reading")
+
+        reading = {"date_obs": first_reading["date_obs"], "resultat_obs": first_reading["resultat_obs"]}
         return reading
