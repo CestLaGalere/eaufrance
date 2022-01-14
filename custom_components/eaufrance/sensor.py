@@ -114,8 +114,7 @@ class VigicruesSensor(Entity):
         return "mdi:fast-forward"
 
     @property
-    def extra_state_attributes(self) -> Mapping[str, Any] | None:
-        """Return the entity specific state attributes."""
+    def extra_state_attributes(self) -> Optional(Mapping[str, Any]):
         return self._attributes
 
     def update(self) -> None:
