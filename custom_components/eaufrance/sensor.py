@@ -17,7 +17,7 @@ from homeassistant.const import (
 )
 
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers.aiohttp_client import async_get_clientsession
+#from homeassistant.helpers.aiohttp_client import async_get_clientsession
 import homeassistant.helpers.config_validation as cv
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
@@ -56,7 +56,7 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
 
 
 async def async_setup_platform(hass: HomeAssistant, config: ConfigEntry, async_add_entities: AddEntitiesCallback, discovery_info=None) -> None:
-    session = async_get_clientsession(hass)
+    #session = async_get_clientsession(hass)
     name = config.get(CONF_NAME)
     device_class = config.get(CONF_DEVICE_CLASS)
     device_id = config.get(CONF_DEVICE_ID)
